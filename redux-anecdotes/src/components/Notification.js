@@ -6,7 +6,8 @@ const Notification = (props) => {
   const style = {
     border: 'solid',
     padding: 10,
-    borderWidth: 1
+    borderWidth: 1,
+    marginBottom: 10
   }
   if (notification === null) {
     return null

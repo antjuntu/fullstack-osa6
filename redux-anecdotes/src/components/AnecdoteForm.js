@@ -16,8 +16,12 @@ const AnecdoteForm = (props) => {
     }, 5000)
   }
 
+  const style = {
+    marginBottom: 10
+  }
+
   return (
-    <div>
+    <div style={style}>
       <form onSubmit={addAnecdote}>
         <div><input name="anecdote" /></div>
         <button type="submit">create</button>
