@@ -5,31 +5,24 @@ import { connect } from 'react-redux'
 
 const AnecdoteList = (props) => {
 
-  const vote = (id) => () => {
-    const votedAnecdote = props.anecdotes.find(a => a.id === id)
-
+  const vote = (id, content) => () => {
     props.voteAnecdote(id)
-    props.setNotification(`you voted '${votedAnecdote.content}'`)
+    props.setNotification(`you voted '${content}'`)
     setTimeout(() => {
       props.resetNotification()
     }, 5000)
   }
 
-  const anecdotesToShow = () => 
-    props.anecdotes.filter(anecdote => 
-      anecdote.content.toLowerCase().includes(props.filter.toLowerCase())
-    )
-
   return (
     <div>
-      {anecdotesToShow().sort((a, b) => b.votes - a.votes).map(anecdote =>
+      {props.anecdotesToShow.sort((a, b) => b.votes - a.votes).map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={vote(anecdote.id)}>vote</button>
+            <button onClick={vote(anecdote.id, anecdote.content)}>vote</button>
           </div>
         </div>
       )}
@@ -37,10 +30,14 @@ const AnecdoteList = (props) => {
   )
 }
 
+const anecdotesToShow = ({ anecdotes, filter }) => 
+    anecdotes.filter(anecdote => 
+      anecdote.content.toLowerCase().includes(filter.toLowerCase())
+    )
+
 const mapStateToProps = (state) => {
   return {
-    anecdotes: state.anecdotes,
-    filter: state.filter
+    anecdotesToShow: anecdotesToShow(state)
   }
 }
 
