@@ -1,7 +1,16 @@
-import React from 'react'
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
+import { resetNotification } from '../reducers/notificationReducer'
 
 const Notification = (props) => {
+
+  useEffect(() => {
+    if (props.notification.message !== null) {
+      setTimeout(() => {
+        props.resetNotification()
+      }, props.notification.timeout)
+    }
+  }, [props])
 
   const style = {
     border: 'solid',
@@ -9,12 +18,12 @@ const Notification = (props) => {
     borderWidth: 1,
     marginBottom: 10
   }
-  if (props.notification === null) {
+  if (props.notification.message === null) {
     return null
   }
   return (
     <div style={style}>
-      {props.notification}
+      {props.notification.message}
     </div>
   )
 }
@@ -26,5 +35,6 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  { resetNotification }
 )(Notification)

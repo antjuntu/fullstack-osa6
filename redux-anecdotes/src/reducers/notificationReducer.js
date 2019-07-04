@@ -1,22 +1,31 @@
-export const setNotification = (notification) => {
-  return {
-    type: 'SET_MESSAGE',
-    notification
-  }
-}
-
 export const resetNotification = () => {
   return {
     type: 'RESET_MESSAGE'
   }
 }
 
-const notificationReducer = (state=null, action) => {
+export const setNotification = (message, timeoutInSecs) => {
+  return {
+    type: 'SET_MESSAGE',
+    data: {
+      message,
+      timeout: timeoutInSecs * 1000
+    }
+  }
+}
+
+const initialState = {
+  message: null
+}
+
+const notificationReducer = (state=initialState, action) => {
   switch(action.type) {
     case 'SET_MESSAGE':
-      return action.notification
+      return action.data
     case 'RESET_MESSAGE':
-      return null
+      return {
+        message: null
+      }
     default: 
     return state
   }
