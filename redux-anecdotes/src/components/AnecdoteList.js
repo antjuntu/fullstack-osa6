@@ -5,9 +5,11 @@ import { connect } from 'react-redux'
 
 const AnecdoteList = (props) => {
 
-  const vote = (id, content) => () => {
-    props.voteAnecdote(id)
-    props.setNotification(`you voted '${content}'`)
+  const vote = (id) => () => {
+    const anecdoteToVote = props.anecdotesToShow.find(a => a.id === id)
+    const votedAnecdote = {...anecdoteToVote, votes: anecdoteToVote.votes + 1}
+    props.voteAnecdote(id, votedAnecdote)
+    props.setNotification(`you voted '${votedAnecdote.content}'`)
     setTimeout(() => {
       props.resetNotification()
     }, 5000)
@@ -22,7 +24,7 @@ const AnecdoteList = (props) => {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={vote(anecdote.id, anecdote.content)}>vote</button>
+            <button onClick={vote(anecdote.id)}>vote</button>
           </div>
         </div>
       )}
